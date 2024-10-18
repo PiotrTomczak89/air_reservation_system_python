@@ -82,6 +82,11 @@ class Flight:
                     yield passenger, f'{row}{letter}'
 
 
+    def print_ticket(self, printer):
+        for passenger, seat in self.get_passenger_list():
+            printer(passenger, seat, self.get_model(), self.flight_number)
+
+
 
 class Airplane:
     def get_seats_no(self):
@@ -108,6 +113,16 @@ class Boeing737Max(Airplane):
     def get_seating_plan():
         return range(1, 46), 'ABCDEGHJK'
 
+def card_printer(passenger, seat, airplane, flight_number):
+    message = f'| Passenger: {passenger.title()}, seat: {seat}, airplane: {airplane}, {flight_number} |'
+    frame = f'+{"-" * (len(message) - 2)}+'
+    empty_frame = f'|{" " * (len(message) - 2)}|'
+    
+    banner = [frame, empty_frame, message, empty_frame, frame]
+    print('\n'.join(banner))
+    print()
+    pass
+
 
 plane = Airplane()
 airbus = AirbusA380()
@@ -125,6 +140,8 @@ f.relocate_passenger(seat_from="12A", seat_to="25G")
 pp(f.seating_plan)
 pp(f.get_empty_seat())
 # pp(f.get_passenger_list())
+
+f.print_ticket(card_printer)
 
 for passenger in f.get_passenger_list():
     print(passenger)
